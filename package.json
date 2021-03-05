@@ -1,0 +1,24 @@
+{
+  "name": "fuck_bot",
+  "version": "1.0.0",
+  "description": "bot to say ofensive words to someone in discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolftrax5/fuck_bot.git"
+  },
+  "keywords": [
+    "discord",
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Alejandro Medina Robles",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wolftrax5/fuck_bot/issues"
+  },
+  "homepage": "https://github.com/wolftrax5/fuck_bot#readme"
+}
