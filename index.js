@@ -1,31 +1,41 @@
-const Discord = require('discord.js')
-const { prefix } = require('./config.json');
+'use strict';
 
 require('dotenv').config()
 
+const Discord = require('discord.js')
+const fs = require('fs');
+const { prefix } = require('./config.json');
+
+
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
 
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-client.on('ready', ()=>{console.log('Ready Discord')})
-
-client.on('message', gotMessage);
-
-function gotMessage(msg){
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
-
-    const args = msg.content.slice(prefix.length).trim().split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if (command === 'kick') {
-        if (!msg.mentions.users.size) {
-            return msg.reply('you need to tag a user in order to kick them!');
-        }
-        // grab the "first" mentioned user from the message
-        // this will return a `User` object, just like `message.author`
-        const taggedUser = msg.mentions.users.first();
-    
-        msg.channel.send(`You wanted to kick: ${taggedUser.username}`);
-    }
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
 }
+
+client.once('ready', () => {
+	console.log('Ready!');
+});
+
+client.on('message', message => {
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
+	const command = args.shift().toLowerCase();
+
+	if (!client.commands.has(command)) return;
+
+	try {
+		client.commands.get(command).execute(message, args);
+	} catch (error) {
+		console.error(error);
+		message.reply('there was an error trying to execute that command!');
+	}
+});
+
 
 client.login(process.env.BOT_TOKEN);
