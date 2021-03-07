@@ -4,6 +4,7 @@ const replies = [ 'Fuck you', 'Bullshit', 'Bastard', 'Asshole', 'Son of a bitch'
 module.exports = {
 	name: 'fucku',
 	description: 'Tell to that special person something special',
+    cooldown: 3,
 	execute(msg, args) {
         if (!msg.mentions.users.size) {
             return msg.reply('FUCK ALL OF YOU !!!');
